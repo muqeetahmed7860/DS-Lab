@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    int months = 12;
+    double rainfall[months];
+    string monthNames[months] = {"January", "February", "March", "April", "May", "June", 
+                                 "July", "August", "September", "October", "November", "December"};
+
+    cout << "Enter the total rainfall (in mm) for each month:" << endl;
+    for (int i = 0; i < months; i++) {
+        cout << monthNames[i] << ": ";
+        cin >> rainfall[i];
+    }
+
+    double totalRainfall = 0;
+    double highestRainfall = rainfall[0];
+    double lowestRainfall = rainfall[0];
+    int highestMonth = 0;
+    int lowestMonth = 0;
+
+    for (int i = 0; i < months; i++) {
+        totalRainfall += rainfall[i]; 
+
+        if (rainfall[i] > highestRainfall) {
+            highestRainfall = rainfall[i];
+            highestMonth = i;  
+        }
+
+        if (rainfall[i] < lowestRainfall) {
+            lowestRainfall = rainfall[i];
+            lowestMonth = i;  
+        }
+    }
+
+    double averageRainfall = totalRainfall / months;
+
+    cout << "\nTotal rainfall for the year: " << totalRainfall << " mm" << endl;
+    cout << "Average monthly rainfall: " << averageRainfall << " mm" << endl;
+    cout << "Month with the highest rainfall: " << monthNames[highestMonth] << " (" << highestRainfall << " mm)" << endl;
+    cout << "Month with the lowest rainfall: " << monthNames[lowestMonth] << " (" << lowestRainfall << " mm)" << endl;
+
+    return 0;
+}
