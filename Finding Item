@@ -1,0 +1,178 @@
+#include <iostream>
+
+using namespace std;
+
+
+
+struct DataItem {
+
+int value;
+
+};
+
+
+
+class Stack {
+
+private:
+
+static const int MAX = 100;
+
+DataItem arr[MAX];
+
+int top;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public:
+
+Stack() {
+
+top = -1;
+
+}
+
+
+
+void push(const DataItem item) {
+
+if (top >= (MAX - 1)) {
+
+cout << "Stack Overflow" << endl;
+
+return;
+
+}
+
+arr[++top] = item;
+
+cout << "Pushed item with value: " << item.value << endl;
+
+}
+
+
+
+int pop() {
+
+if (top < 0) {
+
+cout << "Stack Underflow" << endl;
+
+return -1;
+
+}
+
+return arr[top--].value;
+
+}
+
+
+
+DataItem peek() {
+
+
+
+
+if (top < 0) {
+
+cout << "Stack is Empty" << endl;
+
+return DataItem{-1};
+
+}
+
+return arr[top
+
+}
+
+
+
+bool isEmpty() {
+
+return (top < 0);
+
+}
+
+
+
+void clear() {
+
+top = -1;
+
+cout << "Stack cleared" << endl;
+
+}
+
+};
+
+
+
+int main() {
+
+Stack s;
+
+
+
+DataItem item1 = {10};
+
+DataItem item2 = {20};
+
+DataItem item3 = {30};
+
+
+
+
+
+
+ 
+s.push(item1);
+
+s.push(item2);
+
+s.push(item3);
+
+
+
+DataItem topItem = s.peek();
+
+if (topItem.value != -1) {
+
+cout << "Top item has value: " << topItem.value << endl;
+
+}
+
+
+
+s.clear();
+
+
+
+if (s.isEmpty()) {
+
+cout << "Stack is empty after clear" << endl; } else {
+
+cout << "Stack is not empty after clear" << endl;
+
+}
+
+
+
+return 0;
+
+}
