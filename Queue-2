@@ -1,0 +1,58 @@
+
+#include <iostream>
+#include <queue>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+void printQueue(queue<char> q) {
+    while (!q.empty()) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+    cout << endl;
+}
+
+queue<char> concatenateQueues(const vector<queue<char>>& queues) {
+    queue<char> finalQueue;
+
+    for (auto q : queues) {
+        while (!q.empty()) {
+            finalQueue.push(q.front());
+            q.pop();
+        }
+    }
+
+    return finalQueue;
+}
+
+int main() {
+    string input;
+    cout << "Enter a string: ";
+    getline(cin, input);  
+
+    vector<queue<char>> queues;
+
+    stringstream ss(input);
+    string word;
+
+    while (ss >> word) {
+        queue<char> q;
+        for (char c : word) {
+            q.push(c);  
+        }
+        queues.push_back(q);  
+    }
+
+    for (int i = 0; i < queues.size(); i++) {
+        cout << "Queue " << i + 1 << ": ";
+        printQueue(queues[i]);
+    }
+
+    queue<char> finalQueue = concatenateQueues(queues);
+
+    cout << "Final concatenated queue: ";
+    printQueue(finalQueue);
+
+    return 0;
+}
