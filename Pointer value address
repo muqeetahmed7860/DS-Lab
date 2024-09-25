@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n = 42;  
+    int* ptr;      
+
+    ptr = &n;
+
+    cout << "Value of variable: " << n << endl;
+    cout << "Address of variable: " <<&n << endl;
+    cout << "Pointer ptr holds the address: " << ptr << endl;
+    cout << "Value at the address stored in ptr: " << *ptr << endl;
+
+    return 0;
+}
