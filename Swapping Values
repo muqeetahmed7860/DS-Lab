@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+void changeValues(int* a, int* b) {
+    int temp = *a;  
+    *a = *b;         
+    *b = temp;      
+}
+
+int main() {
+    int x, y;
+
+    cout << "Enter the value of x: ";
+    cin >> x;
+    cout << "Enter the value of y: ";
+    cin >> y;
+
+    cout << "Before change: x = " << x << ", y = " << y << endl;
+
+    changeValues(&x, &y);
+
+    cout << "After change: x = " << x << ", y = " << y << endl;
+
+    return 0;
+}
+
