@@ -1,0 +1,143 @@
+#include <iostream>
+
+using namespace std;
+
+
+int value; // Single integer value
+
+};
+
+
+class Stack {
+
+private:
+
+static const int MAX = 100; // Maximum size of the stack
+
+
+DataItem arr[MAX];	// Array to store DataItem objects
+
+
+
+
+
+
+
+
+
+
+	
+int top;	// Index to keep track of the top of the stack
+
+
+
+public:
+
+//	Constructor: Initializes the stack as empty Stack() {
+
+top = -1;
+
+}
+
+
+
+//	Push function: Adds a DataItem object to the stack void push(const DataItem item) {
+
+if (top >= (MAX - 1)) {
+
+cout << "Stack Overflow" << endl; return;
+
+}
+
+arr[++top] = item; // Increment top and add the DataItem to the stack cout << "Pushed item with value: " << item.value << endl;
+
+}
+
+
+
+if (top < 0) {
+
+cout << "Stack Underflow" << endl;
+
+return -1; // Indicates error; this can be adjusted
+
+}
+
+
+
+
+return arr[top--].value; // Return the value from the top DataItem and decrement the top
+
+}
+
+
+
+
+it
+
+DataItem peek() {
+
+if (top < 0) {
+
+cout << "Stack is Empty" << endl;
+
+return DataItem{-1}; // Return a default DataItem if empty
+
+}
+
+return arr[top]; // Return the DataItem at the top of the stack
+
+}
+
+
+
+//	Function to check if the stack is empty bool isEmpty() {
+
+return (top < 0);
+
+}
+
+};
+
+
+
+int main() {
+
+Stack s; // Create a stack of DataItem
+
+
+
+
+18 | P a g e
+ 
+DataItem item2 = {20};
+
+DataItem item3 = {30};
+
+
+
+
+s.push(item2);
+
+s.push(item3);
+
+
+
+
+DataItem topItem = s.peek(); // This should show 30
+
+if (topItem.value != -1) { // Check if the peek operation was successful cout << "Top item has value: " << topItem.value << endl;
+
+}
+
+
+
+topItem = s.peek(); // This should now show 20
+
+if (topItem.value != -1) { // Check if the peek operation was successful cout << "Top item after pop has value: " << topItem.value << endl;
+
+}
+
+
+
+return 0;
