@@ -1,0 +1,207 @@
+#include <iostream>  // Include the input/output stream library
+#include <string>    // Include the string library
+
+using namespace std;  // Use the standard namespace for convenience
+
+// Class representing a Book
+class Book {
+public:
+    string title;        // Title of the book
+    string author;       // Author of the book
+    bool isBorrowed;     // Status of the book (true if borrowed, false otherwise)
+
+    // Constructor to initialize the book's title and author
+    Book(string t, string a) : title(t), author(a), isBorrowed(false) {}
+};
+
+// Class representing a node in the Binary Search Tree (BST)
+class TreeNode {
+public:
+    Book* book;          // Pointer to the Book object
+    TreeNode* left;      // Pointer to the left child
+    TreeNode* right;     // Pointer to the right child
+
+    // Constructor to initialize the node with a book
+    TreeNode(Book* b) : book(b), left(nullptr), right(nullptr) {}
+};
+
+// Class implementing the Binary Search Tree for book management
+class BinarySearchTree {
+private:
+    TreeNode* root;      // Root of the BST
+
+    // Helper function to insert a book into the BST
+    void insert(TreeNode*& node, Book* book) {
+        if (!node) {  // If the node is null, create a new node
+            node = new TreeNode(book);
+        } else if (book->title < node->book->title) {  // If the book title is less, go left
+            insert(node->left, book);
+        } else {  // Otherwise, go right
+            insert(node->right, book);
+        }
+    }
+
+    // Helper function to search for a book by title
+    TreeNode* search(TreeNode* node, string title) {
+        if (!node || node->book->title == title) {  // If node is null or title matches
+            return node;
+        } else if (title < node->book->title) {  // If title is less, search left
+            return search(node->left, title);
+        } else {  // Otherwise, search right
+            return search(node->right, title);
+        }
+    }
+
+public:
+    // Constructor to initialize the BST
+    BinarySearchTree() : root(nullptr) {}
+
+    // Public method to insert a book
+    void insert(Book* book) {
+        insert(root, book);
+    }
+
+    // Public method to search for a book by title
+    Book* search(string title) {
+        TreeNode* result = search(root, title);
+        return result ? result->book : nullptr;  // Return the book if found, else nullptr
+    }
+};
+
+// Class representing the Library
+class Library {
+private:
+    BinarySearchTree booksBST;  // BST to store books
+    string borrowersQueue[100];  // Array to act as a queue for borrowers
+    int front, rear;             // Indices for the queue (front and rear)
+
+public:
+    // Constructor to initialize the queue and prepopulate the library with books
+    Library() : front(0), rear(0) {
+        // Prepopulate the library with books
+        addBook("Data Structures and Algorithms", "Sir IHTESHAM ULLAH");
+        addBook("Multi Variable Calculus (MVC)", "Sir ARSALAN AHMED");
+        addBook("Software Engineering", "Sir MUBRAIZ KHAN");
+        addBook("Basic Teaching of Quran", "Sir ABDURREHMAN YOUSAFZAI");
+        addBook("Technical and Business Idea","Sir SALMAN KHAN");
+    }
+
+    // Method to add a book to the library
+    void addBook(string title, string author) {
+        Book* book = new Book(title, author);  // Create a new book
+        booksBST.insert(book);  // Insert the book into the BST
+        cout << "Added: " << book->title << " by " << book->author << endl;  // Confirmation message
+    }
+
+    // Method to search for a book in the library
+    void searchBook(string title) {
+        Book* book = booksBST.search(title);  // Search for the book in the BST
+        if (book) {  // If the book is found
+            cout << "Found: " << book->title << " by " << book->author
+                 << (book->isBorrowed ? " (Borrowed)" : " (Available)") << endl;  // Show status
+        } else {
+            cout << "Book not found!" << endl;  // Book not found message
+        }
+    }
+
+    // Method to borrow a book from the library
+    void borrowBook(string title, string user) {
+        Book* book = booksBST.search(title);  // Search for the book
+        if (book) {  // If the book is found
+            if (book->isBorrowed) {  // If the book is already borrowed
+                cout << book->title << " is currently borrowed. Adding " << user << " to the queue." << endl;
+                // Add the user to the queue
+                borrowersQueue[rear++] = user;  // Enqueue user
+            } else {  // If the book is available
+                book->isBorrowed = true;  // Mark the book as borrowed
+                cout << user << " borrowed: " << book->title << endl;  // Confirmation message
+            }
+        } else {
+            cout << "Book not found!" << endl;  // Book not found message
+        }
+    }
+
+    // Method to return a book to the library
+    void returnBook(string title, string user) {
+        Book* book = booksBST.search(title);  // Search for the book
+        if (book && book->isBorrowed) {  // If the book is borrowed
+            book->isBorrowed = false;  // Mark the book as available
+            cout << user << " returned: " << book->title << endl;  // Confirmation message
+
+            // Check if there are users in the queue
+            if (front < rear) {  // If there are users in the queue
+                string nextUser = borrowersQueue[front++];  // Dequeue the next user
+                book->isBorrowed = true;  // Mark the book as borrowed
+                cout << nextUser << " borrowed: " << book->title << " from the queue." << endl;  // Notify the next user
+            }
+        } else {
+            cout << "Book was not borrowed or does not exist." << endl;  // Message if the book wasn't borrowed
+        }
+    }
+};
+
+int main() {
+    Library library;  // Create a library instance
+    int choice;  // Variable to hold user choice
+
+    // Main loop to interact with the user
+    do {
+        cout << "\nLibrary Management System\n";  // Display the menu header
+        cout << "1. Add Book\n";  // Option to add a book
+        cout << "2. Search Book\n";  // Option to search for a book
+        cout << "3. Borrow Book\n";  // Option to borrow a book
+        cout << "4. Return Book\n";  // Option to return a book
+        cout << "5. Exit\n";  // Option to exit the program
+        cout << "Enter your choice: ";  // Prompt user for input
+        cin >> choice;  // Get user choice
+
+        // Handle user choice
+        switch (choice) {
+            case 1: {  // Add Book
+                string title, author;
+                cout << "Enter book title: ";  // Ask for book title
+                cin.ignore();  // Ignore newline from previous input
+                getline(cin, title);  // Get book title
+                cout << "Enter book author: ";  // Ask for book author
+                getline(cin, author);  // Get book author
+                library.addBook(title, author);  // Add book to library
+                break;
+            }
+            case 2: {  // Search Book
+                string title;
+                cout << "Enter book title to search: ";  // Ask for book title
+                cin.ignore();  // Ignore newline from previous input
+                getline(cin, title);  // Get book title
+                library.searchBook(title);  // Search for the book
+                break;
+            }
+            case 3: {  // Borrow Book
+                string title, user;
+                cout << "Enter book title to borrow: ";  // Ask for book title
+                cin.ignore();  // Ignore newline from previous input
+                getline(cin, title);  // Get book title
+                cout << "Enter your name: ";  // Ask for user name
+                getline(cin, user);  // Get user name
+                library.borrowBook(title, user);  // Borrow the book
+                break;
+            }
+            case 4: {  // Return Book
+                string title, user;
+                cout << "Enter book title to return: ";  // Ask for book title
+                cin.ignore();  // Ignore newline from previous input
+                getline(cin, title);  // Get book title
+                cout << "Enter your name: ";  // Ask for user name
+                getline(cin, user);  // Get user name
+                library.returnBook(title, user);  // Return the book
+                break;
+            }
+            case 5:  // Exit
+                cout << "Exiting the system. Goodbye!" << endl;  // Exit message
+                break;
+            default:  // Invalid choice
+                cout << "Invalid choice. Please try again." << endl;  // Invalid choice message
+        }
+    } while (choice != 5);  // Repeat until user chooses to exit
+
+    return 0;  // End of the program
+}
